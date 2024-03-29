@@ -22,10 +22,27 @@ PIP3 := ./{VENV_NAME}/bin/pip3
 REQUIREMENTS := $(shell ${PIP3} install -r ./requirements.txt)
 $(info Virtual Environment Created!)
 
-###########
-# PIPELINE
-###########
 
+#############################
+#       PATHS SHORCUTS
+#############################
+PIPELINE_DIRECTORY := ./.pipeline
+SCRIPTS_DIRECTORY := ./$(PIPELINE_DIRECTORY)/scripts
+ARTIFACTS_DIRECTORY := ./$(PIPELINE_DIRECTORY)/artifacts
+
+
+#############################
+#      CONFIGURATIONS
+#############################
+INPUT_HANDLER_SCRIPT := ./$(SCRIPTS_DIRECTORY)/input_handler.py
+DATA_CLEANING_SCRIPT := ./$(SCRIPTS_DIRECTORY)/data_cleaning.py
+GENERATE_ROUTE_SCRIPT := ./$(SCRIPTS_DIRECTORY)/generate_route.py
+OUTPUT_HANDLER_SCRIPT := ./$(SCRIPTS_DIRECTORY)/output_handler.py
+
+
+#############################
+#         PIPELINE
+#############################
 input:
 	@echo "Handling Input Data"
 
