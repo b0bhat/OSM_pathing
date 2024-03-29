@@ -1,0 +1,7 @@
+scipy
+matplotlib
+pandas
+statsmodels
+scikit-learn
+jupyter
+pillow-heif
