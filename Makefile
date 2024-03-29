@@ -15,7 +15,7 @@ endif
 
 $(info Creating Virtual Envrionment...)
 VENV_NAME := venv
-CREATE_VENV := $(shell $(VENV) -p python3 ./{VENV_NAME})
+CREATE_VENV := $(shell $(VENV) -p python3 ./$(VENV_NAME))
 VENV_ACTIVATE := ./{VENV_NAME}/bin/activate
 PYTHON3 := ./{VENV_NAME}/bin/python3
 PIP3 := ./{VENV_NAME}/bin/pip3
