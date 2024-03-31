@@ -5,9 +5,13 @@ Handling input to generate data for the pipeline
 '''
 
 import os, requests
+import numpy as np
+import sys
 from PIL import Image
 from PIL.ExifTags import TAGS, GPSTAGS
 from pillow_heif import register_heif_opener
+
+filename = sys.argv[1]
 
 # reference: https://www.geeksforgeeks.org/how-to-extract-image-metadata-in-python/
 def get_metadata(image_file):
@@ -42,27 +46,15 @@ def gps_data_to_degree(degrees, minutes, seconds, direction):
   decimal = degrees + minutes / 60 + seconds / 3600
   if direction in ['S', 'W']:
       decimal = -decimal
-
-  print(decimal)
   return decimal
 
-# https://nominatim.org/release-docs/develop/api/Search/
-def geo_coding(address):
-    base_url = f"https://nominatim.openstreetmap.org/search?"
-    params = {
-        "q": address,
-        "format": "json"
-    }
-    headers = {
-        "User-Agent": "cmpt353project"
-    }
-    response = requests.get(base_url, params=params, headers=headers)
-    if response.status_code == 200: # successful
-      result   = response.json()
-      latitude  = result[0]['lat']
-      longitude = result[0]['lon']
-    else:
-      print(f"[ERROR]: api call failed with code {response.status_code}")
-      return None
+file_path = os.path.abspath(filename)
 
-    return (float(longitude), float(latitude))
+metadata = get_metadata(file_path)
+latitude = gps_data_to_degree(*metadata['GPSInfo']['GPSLatitude'], metadata['GPSInfo']['GPSLatitudeRef'])
+longitude = gps_data_to_degree(*metadata['GPSInfo']['GPSLongitude'], metadata['GPSInfo']['GPSLongitudeRef'])
+
+location = (float(longitude), float(latitude))
+
+print(f'location = {location}')
+np.save('../artifacts/location.npy', location)
