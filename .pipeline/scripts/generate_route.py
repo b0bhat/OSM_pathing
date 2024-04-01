@@ -15,53 +15,60 @@ from sklearn.neighbors import BallTree
 
 import shared_methods
 
-# start_point = (-73.98568, 40.748817)
-# end_point = (-73.98739, 40.764352)
+# How many places to vist until you get hungry
+hungriness = 10
 
-# route_data = route_methods.osrm_route_query([start_point, end_point], mode="driving")
-# print(route_data)
+# interesting point weight factor, from 1 (dont care) to 10 (only want interesting)
+interestingness = 5
 
-# need to take weight into account when finding nearest point
+# comment this out unless testing
+# np.random.seed(42)
+
 def find_closest_points(tree, p_lat, p_lon, k=10, epsilon=0.001):
     p_lat += np.random.uniform(-epsilon, epsilon)
     p_lon += np.random.uniform(-epsilon, epsilon)
     dist, index = tree.query([(p_lat, p_lon)], k=k)
     return index[0], dist[0]
 
-def calculate_route(data, start_point, max_points=10, max_distance=0.5):
+from sklearn.neighbors import BallTree
+
+def calculate_route(all_data, start_point, max_points=10, max_distance=0.5):
     indices = []
     total_distance = 0
-    # total_weight = 0
-    balltree = BallTree(data[['lat', 'lon']].values, leaf_size = 15, metric='haversine')
+    data = all_data[all_data['food'] == 0].reset_index(drop=True)
+    balltree = BallTree(data[['lat', 'lon']].values, leaf_size=15, metric='haversine')
     visited = set([])
 
-    for _ in range(max_points):
-      if len(visited) == 0:
-        current_point = start_point
-      else:
-        current_point = data.loc[indices[-1]]
-      neighbors, distances = find_closest_points(balltree, current_point['lat'], current_point['lon'], k=max_points)
-      adjusted_distances = []
+    for i in range(max_points):
+        if len(visited) == 0:
+            current_point = start_point
+        else:
+            current_point = all_data.iloc[indices[-1]]
 
-      for neighbor, distance in zip(neighbors, distances):
-        weight = data.loc[neighbor]['weight']
-        distance *= (1-(weight-1)/20)
-        adjusted_distances.append(distance)
+        neighbors, distances = find_closest_points(balltree, current_point['lat'], current_point['lon'], k=max_points)
+        adjusted_distances = []
+        for neighbor, distance in zip(neighbors, distances):
+            weight = data.loc[neighbor]['weight']
+            distance *= (1 - (weight - 1) / (20/interestingness))
+            adjusted_distances.append((neighbor, distance))
 
-      adjusted_distances.sort()
+        adjusted_distances.sort(key=lambda x: x[1])
 
-      # get a list of neighbors and if a neighbor is not in the list, use it as the next point
-      for neighbor, distance in zip(neighbors, adjusted_distances):
-        if neighbor not in visited:
-            total_distance += distance
-            # total_weight += data.loc[neighbor]['weight']
-            indices.append(neighbor)
-            visited.add(neighbor)
+        # Get a list of neighbors and if a neighbor is not in the list, use it as the next point
+        for neighbor, distance in adjusted_distances:
+            if neighbor not in visited:
+                total_distance += distance
+                lat = data.iloc[neighbor]['lat']
+                lon = data.iloc[neighbor]['lon']
+                all_data_index = all_data.query("lat == @lat & lon == @lon").index[0]
+                indices.append(all_data_index)
+                visited.add(neighbor)
+                break
+        if total_distance >= max_distance:
             break
-      if total_distance >= max_distance:
-        break
 
-    return data.loc[indices], total_distance #, total_weight
+    return all_data.iloc[indices], total_distance
+
 
 def stitch_route(route):
     stitched_route = pd.DataFrame(columns=['lon', 'lat'])
@@ -78,9 +85,11 @@ def stitch_route(route):
 location = np.load('../artifacts/location.npy')
 point = pd.Series({'lat': location[1], 'lon': location[0]})
 
-data = shared_methods.load_data('../artifacts/weighted_amenities-vancouver.csv')
+all_data = shared_methods.load_data('../artifacts/weighted_amenities-vancouver.csv')
+# all_data = all_data[all_data['food'] == 0].reset_index()
+
 
 # calculate_route <weighed data> <your test point> <max points in route> <max km in route>
-route, total_distance = calculate_route(data, point, 200, 50)
-
-shared_methods.visualize_route(data, route)
+route, total_distance = calculate_route(all_data, point, 15, 5)
+print(route[['name', 'weight']])
+shared_methods.visualize_route(all_data, route)

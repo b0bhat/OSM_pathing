@@ -6,6 +6,7 @@ Handling input to generate data for the pipeline
 
 import os, requests
 import pandas as pd
+import numpy as np
 from PIL import Image
 from PIL.ExifTags import TAGS, GPSTAGS
 from pillow_heif import register_heif_opener
@@ -34,17 +35,24 @@ amenities_not_include = [
     "motorcycle_rental"
 ]
 
-# assign manually the base weight to different amenity from range (1-10)
-
-base_weights = {
+# Food is segregrated to prevent overpoweing amenity weights
+food_weights = {
     "cafe": 3,
     "fast_food": 2,
     "bbq": 3,
     "restaurant": 6,
     "pub": 5,    # family mode
+    "bar": 6,    # family mode
+    "bistro": 5,
+    "juice_bar": 3,
+    "biergarten": 5,    # family mode
+    "disused:restaurant": 6,
+}
+
+# assign the base weight to different amenity from range (1-10)
+base_weights = {
     "cinema": 5,
     "theatre": 5,
-    "bar": 6,    # family mode
     "library": 2,
     "fountain": 1,
     "photo_booth": 4,
@@ -54,16 +62,12 @@ base_weights = {
     "clock": 1,
     "gambling": 6,    # family mode
     "townhall": 2,
-    "bistro": 5,
     "playground": 4,
     "events_venue": 6,
-    "juice_bar": 3,
     "internet_cafe": 3,
     "social_centre": 3,
-    "disused:restaurant": 6,
     "Observation Platform": 8,
     "park": 5,
-    "biergarten": 5,    # family mode
     "casino": 5,    # family mode
     "leisure": 5,
     "shop|clothes": 7
@@ -75,12 +79,14 @@ if family_mode:
     for place in adult_only_amenities:
         if place in base_weights:
             base_weights[place] = 0
+        if place in food_weights:
+            food_weights[place] = 0
 
 # Function to check if a tags has 'historic' or 'tourism' keys
 def has_tourism(tags):
     return 'tourism' in tags
 
-data = shared_methods.load_data(['../artifacts/amenities-vancouver.json.gz'])
+data = shared_methods.load_data('../artifacts/amenities-vancouver.json.gz')
 
 # all records that have tourism key in their tag
 tourism_data = data[data['tags'].apply(has_tourism)]
@@ -92,13 +98,19 @@ tourism_data = tourism_data[tourism_data['name'] != 'Trans Canada Trail Pavillio
 # for record in the filtered_data, change its 'amenity' column to 'tourism' and update the main data
 data.loc[tourism_data.index, 'amenity'] = 'tourism'
 
-# list with amenities to include
-# amenities_include = set(data['amenity'].unique()) - set(amenities_not_include)  - set(food)
-amenities_include = set(data['amenity'].unique()) - set(amenities_not_include)
+# # list with amenities to include
+# amenities_include = set(data['amenity'].unique()) - set(amenities_not_include)
 
 # keep records in data that if the 'amenity' column is in the amenities_include list
-data = data[data['amenity'].isin(amenities_include)]
+# data = data[data['amenity'].isin(amenities_include)]
 
 # map the dictionary to the dataset
-data['weight'] = data['amenity'].map(base_weights)
+data['weight'] = data['amenity'].map({**base_weights, **food_weights})
+data = data.dropna(subset=['weight'])
+data['food'] = np.where(data['amenity'].isin(food_weights.keys()), 1, 0)
+data.reset_index(drop=True, inplace=True)
+
+data.loc[data['name'].isnull(), 'weight'] //= 2
+
 data.to_csv('../artifacts/weighted_amenities-vancouver.csv', index=False)
+# food_data.to_csv('../artifacts/food_amenities.csv', index=False)
