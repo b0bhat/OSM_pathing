@@ -1,0 +1,7 @@
+{
+    "family_mode": false,
+    "max_distance": 0.5,
+    "interestingness": 2.5,
+    "hungriness": 7,
+    "filename": "images/surrey.jpg"
+  }

@@ -13,7 +13,7 @@ from pillow_heif import register_heif_opener
 
 import shared_methods
 
-family_mode = False
+family_mode = shared_methods.read_config(["family_mode"])
 
 # ammenities to exclude
 amenities_not_include = [
@@ -98,19 +98,14 @@ tourism_data = tourism_data[tourism_data['name'] != 'Trans Canada Trail Pavillio
 # for record in the filtered_data, change its 'amenity' column to 'tourism' and update the main data
 data.loc[tourism_data.index, 'amenity'] = 'tourism'
 
-# # list with amenities to include
-# amenities_include = set(data['amenity'].unique()) - set(amenities_not_include)
-
-# keep records in data that if the 'amenity' column is in the amenities_include list
-# data = data[data['amenity'].isin(amenities_include)]
-
-# map the dictionary to the dataset
+# populate data with weights, remove nonweighted entries, label food places 
 data['weight'] = data['amenity'].map({**base_weights, **food_weights})
 data = data.dropna(subset=['weight'])
 data['food'] = np.where(data['amenity'].isin(food_weights.keys()), 1, 0)
 data.reset_index(drop=True, inplace=True)
 
+# If the place has no name, it probably isn't very interesting, weight is halved
 data.loc[data['name'].isnull(), 'weight'] //= 2
-
+data = data[data['weight'] != 0]
 data.to_csv('../artifacts/weighted_amenities-vancouver.csv', index=False)
 # food_data.to_csv('../artifacts/food_amenities.csv', index=False)

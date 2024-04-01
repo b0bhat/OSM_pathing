@@ -11,7 +11,9 @@ from PIL import Image
 from PIL.ExifTags import TAGS, GPSTAGS
 from pillow_heif import register_heif_opener
 
-filename = sys.argv[1]
+import shared_methods
+
+filename = shared_methods.read_config(["filename"])[0]
 
 # reference: https://www.geeksforgeeks.org/how-to-extract-image-metadata-in-python/
 def get_metadata(image_file):
@@ -48,7 +50,7 @@ def gps_data_to_degree(degrees, minutes, seconds, direction):
       decimal = -decimal
   return decimal
 
-file_path = os.path.abspath(filename)
+file_path = os.path.abspath("../../" + filename)
 
 metadata = get_metadata(file_path)
 latitude = gps_data_to_degree(*metadata['GPSInfo']['GPSLatitude'], metadata['GPSInfo']['GPSLatitudeRef'])

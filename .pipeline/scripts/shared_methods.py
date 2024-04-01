@@ -1,6 +1,7 @@
 '''
 Shared methods for routing
 '''
+import json
 import requests
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -57,3 +58,8 @@ def visualize_route(data, route):
     plt.ylabel('lat')
     plt.grid(True)
     plt.show()
+
+def read_config(variables):
+    with open('../../config.json') as f:
+        config = json.load(f)
+    return [config.get(var) for var in variables]
