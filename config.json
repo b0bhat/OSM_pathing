@@ -1,12 +1,12 @@
 {
-    "data": "../artifacts/amenities-vancouver.json.gz",
+    "data": "./.pipeline/artifacts/amenities-vancouver.json.gz",
     "location": [
         -122.8432494,
         49.18020609972222
     ],
-    "output": "./output/",
-    "max_distance": "0.5",
-    "hungriness": "7",
-    "interestingness": "2.5",
-    "family_mode": "False"
+    "output": "./output",
+    "max_distance": 0.5,
+    "hungriness": 7.0,
+    "interestingness": 2.5,
+    "family_mode": "True"
 }

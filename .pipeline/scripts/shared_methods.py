@@ -80,7 +80,6 @@ class Helper:
 
     # plot the route on the map
     def visualize_route(self, data, route):
-        data = self.load_data('../artifacts/weighted_amenities-vancouver.csv')
         plt.scatter(data['lon'], data['lat'], s=5)
         route_lat = route['lat'].tolist()
         route_lon = route['lon'].tolist()
@@ -91,12 +90,12 @@ class Helper:
         plt.show()
 
     def save_config(self, data):
-        with open('../../config.json', 'w') as f:
+        with open('./config.json', 'w') as f:
             json.dump(data, f, indent=4)
         
 
     # read config file
-    def read_config(variables):
+    def read_config(self, variables):
         with open('../../config.json') as f:
             config = json.load(f)
 

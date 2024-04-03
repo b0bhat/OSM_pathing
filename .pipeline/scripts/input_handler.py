@@ -18,9 +18,9 @@ helper = Helper()
 data = helper.args['data']
 imagefile = helper.args['image']
 output = helper.args['output']
-max_distance = helper.args['distance']
-hungriness = helper.args['hungriness']
-interestingness = helper.args['interestingness']
+max_distance = float(helper.args['distance'])
+hungriness = float(helper.args['hungriness'])
+interestingness = float(helper.args['interestingness'])
 family_mode = helper.args['family_mode']
 
 # reference: https://www.geeksforgeeks.org/how-to-extract-image-metadata-in-python/

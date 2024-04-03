@@ -107,5 +107,5 @@ data.reset_index(drop=True, inplace=True)
 # If the place has no name, it probably isn't very interesting, weight is halved
 data.loc[data['name'].isnull(), 'weight'] //= 2
 data = data[data['weight'] != 0]
-data.to_csv('../artifacts/weighted_amenities-vancouver.csv', index=False)
+data.to_csv('./.pipeline/artifacts/weighted_amenities-vancouver.csv', index=False)
 # food_data.to_csv('../artifacts/food_amenities.csv', index=False)

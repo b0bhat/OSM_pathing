@@ -14,12 +14,12 @@ export VENV := $(shell which virtualenv)
 endif
 
 $(info Creating Virtual Envrionment...)
-VENV_NAME := venv
-CREATE_VENV := $(shell $(VENV) -p python3 ./$(VENV_NAME))
-VENV_ACTIVATE := ./$(VENV_NAME)/bin/activate
-PYTHON3 := ./$(VENV_NAME)/bin/python3
-PIP3 := ./$(VENV_NAME)/bin/pip3
-REQUIREMENTS := $(shell ${PIP3} install -r ./requirements.txt)
+# VENV_NAME := venv
+# CREATE_VENV := $(shell $(VENV) -p python3 ./$(VENV_NAME))
+# VENV_ACTIVATE := ./$(VENV_NAME)/bin/activate
+# PYTHON3 := ./$(VENV_NAME)/bin/python3
+# PIP3 := ./$(VENV_NAME)/bin/pip3
+# REQUIREMENTS := $(shell ${PIP3} install -r ./requirements.txt)
 $(info Virtual Environment Created!)
 
 
@@ -28,7 +28,7 @@ $(info Virtual Environment Created!)
 #############################
 ifeq ($(origin IMAGE), undefined)
 $(info [WARNING] 'IMAGE' is not set, default to 'dafualt_image')
-IMAGE := ./$(IMAGES_DIRECTORY)/default_image.jpg
+IMAGE := ./images/default_image.jpg
 else
 $(info [INFO] 'IMAGE'= $(IMAGE))
 endif
@@ -75,18 +75,17 @@ endif
 PIPELINE_DIRECTORY := ./.pipeline
 SCRIPTS_DIRECTORY := ./$(PIPELINE_DIRECTORY)/scripts
 ARTIFACTS_DIRECTORY := ./$(PIPELINE_DIRECTORY)/artifacts
-IMAGES_DIRECTORY := ./images
 
 
 #############################
 #      CONFIGURATIONS
 #############################
-DATA := ./$(PIPELINE_DIRECTORY)/assets/amenities-vancouver.json.gz
-INPUT_HANDLER_SCRIPT := ./$(SCRIPTS_DIRECTORY)/input_handler.py
-DATA_CLEANING_SCRIPT := ./$(SCRIPTS_DIRECTORY)/data_cleaning.py
-GENERATE_ROUTE_SCRIPT := ./$(SCRIPTS_DIRECTORY)/generate_route.py
-OUTPUT_HANDLER_SCRIPT := ./$(SCRIPTS_DIRECTORY)/output_handler.py
-SCRIPT_ARGS := --data $(DATA) --image $(IMAGE) --family_mode $(FAMILY_MODE) --output $(OUTPUT) --max_distance $(MAX_DISTANCE) --interestingness $(INTERESTINGNESS) --hungriness $(HUNGRINESS)
+DATA := $(PIPELINE_DIRECTORY)/artifacts/amenities-vancouver.json.gz
+INPUT_HANDLER_SCRIPT := $(SCRIPTS_DIRECTORY)/input_handler.py
+DATA_CLEANING_SCRIPT := $(SCRIPTS_DIRECTORY)/data_cleaning.py
+GENERATE_ROUTE_SCRIPT := $(SCRIPTS_DIRECTORY)/generate_route.py
+OUTPUT_HANDLER_SCRIPT := $(SCRIPTS_DIRECTORY)/output_handler.py
+SCRIPT_ARGS := --data $(DATA) --image $(IMAGE) --family_mode $(FAMILY_MODE) --output $(OUTPUT) --distance $(MAX_DISTANCE) --interestingness $(INTERESTINGNESS) --hungriness $(HUNGRINESS)
 
 
 #############################
@@ -110,21 +109,21 @@ help:
 # example run
 # make run IMAGE=./images/default_image.jpg FAMILY_MODE=False OUTPUT=./output MAX_DISTANCE=0.5 INTERESTINGNESS=2.5 HUNGRINESS=7
 
-input:
-	@echo "Handling Input Data"
+input_handler:
+	@echo "[INFO] Handling Input Data"
 	@$(PYTHON3) $(INPUT_HANDLER_SCRIPT) $(SCRIPT_ARGS)
 
 data_cleaning:
-	@echo "Cleaning Data Sets"
+	@echo "[INFO] Cleaning Data Sets"
 	@$(PYTHON3) $(DATA_CLEANING_SCRIPT) $(SCRIPT_ARGS)
 
 generate_route:
-	@echo "Generating Route"
+	@echo "[INFO] Generating Route"
 	@$(PYTHON3) $(GENERATE_ROUTE_SCRIPT) $(SCRIPT_ARGS)
 
-output:
-	@echo "Output Data"
+output_handler:
+	@echo "[INFO] Output Data"
 	@$(PYTHON3) $(OUTPUT_HANDLER_SCRIPT) $(SCRIPT_ARGS)
 
 # master command
-run: input data_cleaning generate_route output
+run: input_handler data_cleaning generate_route output_handler

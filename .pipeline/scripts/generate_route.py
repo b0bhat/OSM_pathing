@@ -16,7 +16,7 @@ from shared_methods import Helper
 
 helper = Helper()
 location, hungriness, interestingness, max_distance = helper.read_config(["location", "hungriness", "interestingness", "max_distance"])
-weighted_data = helper.load_data('../artifacts/weighted_amenities-vancouver.csv')
+weighted_data = helper.load_data('./.pipeline/artifacts/weighted_amenities-vancouver.csv')
 
 # np.random.seed(42)
 
@@ -102,4 +102,6 @@ route, total_distance = calculate_route(weighted_data, point, 100, )
 # print(route[['name', 'weight']])
 # print(route['weight'].mean())
 
-np.save('../artifacts/route.npy', route)
+stitched_route = stitch_route(route)
+stitched_route.to_csv('./.pipeline/artifacts/route.csv', index=False)
+# np.save('./.pipeline/artifacts/route.npy', route)
