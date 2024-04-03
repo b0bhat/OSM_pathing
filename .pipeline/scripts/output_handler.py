@@ -1,10 +1,20 @@
 #!/usr/bin/env python3
 
 '''
-Output dataframe into a GPX file
+Output dataframe into a GPX file and display the route on a map
 '''
 
+import numpy as np
+from shared_methods import Helper
+
+helper = Helper()
+output_dir = helper.read_config(["output"])
+output_filename = "output.gpx"
+weighted_data = helper.load_data('../artifacts/weighted_amenities-vancouver.csv')
+route = np.load("../artifacts/route.npy")
+
 OUTPUT_TEMPLATE = (
+
 )
 
 # from exercise3 calc_distance_hint.py
@@ -29,3 +39,7 @@ def output_gpx(points, output_filename):
 
     with open(output_filename, 'w') as fh:
         doc.writexml(fh, indent=' ')
+
+
+helper.visualize_route(weighted_data, route)
+output_gpx(route, output_filename)

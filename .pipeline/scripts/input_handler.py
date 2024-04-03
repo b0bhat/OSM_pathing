@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/python3
 
 '''
 Handling input to generate data for the pipeline
@@ -11,9 +11,17 @@ from PIL import Image
 from PIL.ExifTags import TAGS, GPSTAGS
 from pillow_heif import register_heif_opener
 
-import shared_methods
+from shared_methods import Helper
 
-filename = shared_methods.read_config(["filename"])[0]
+# get input variables
+helper = Helper()
+data = helper.args['data']
+imagefile = helper.args['image']
+output = helper.args['output']
+max_distance = helper.args['distance']
+hungriness = helper.args['hungriness']
+interestingness = helper.args['interestingness']
+family_mode = helper.args['family_mode']
 
 # reference: https://www.geeksforgeeks.org/how-to-extract-image-metadata-in-python/
 def get_metadata(image_file):
@@ -50,13 +58,30 @@ def gps_data_to_degree(degrees, minutes, seconds, direction):
       decimal = -decimal
   return decimal
 
-file_path = os.path.abspath("../../" + filename)
-
-metadata = get_metadata(file_path)
+# get location from image metadata
+metadata = get_metadata(imagefile)
 latitude = gps_data_to_degree(*metadata['GPSInfo']['GPSLatitude'], metadata['GPSInfo']['GPSLatitudeRef'])
 longitude = gps_data_to_degree(*metadata['GPSInfo']['GPSLongitude'], metadata['GPSInfo']['GPSLongitudeRef'])
 
 location = (float(longitude), float(latitude))
 
-print(f'location = {location}')
-np.save('../artifacts/location.npy', location)
+# save all input variables to config.json
+print(f"""Inputs:
+Data                    = {data}
+Location of Input Image = {location}
+Output Path             = {output}
+Max Distance            = {max_distance}
+Hungriness              = {hungriness}
+Interestingness         = {interestingness}
+Family Mode             = {family_mode}
+""")
+
+helper.save_config({
+  "data": data,
+  "location": location,
+  "output": output,
+  "max_distance": max_distance,
+  "hungriness": hungriness,
+  "interestingness": interestingness,
+  "family_mode": family_mode
+})

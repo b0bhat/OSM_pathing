@@ -11,9 +11,11 @@ from PIL import Image
 from PIL.ExifTags import TAGS, GPSTAGS
 from pillow_heif import register_heif_opener
 
-import shared_methods
+from shared_methods import Helper
 
-family_mode = shared_methods.read_config(["family_mode"])
+helper = Helper()
+data_file, family_mode = helper.read_config(["data", "family_mode"])
+data = helper.load_data(data_file)
 
 # ammenities to exclude
 amenities_not_include = [
@@ -85,8 +87,6 @@ if family_mode:
 # Function to check if a tags has 'historic' or 'tourism' keys
 def has_tourism(tags):
     return 'tourism' in tags
-
-data = shared_methods.load_data('../artifacts/amenities-vancouver.json.gz')
 
 # all records that have tourism key in their tag
 tourism_data = data[data['tags'].apply(has_tourism)]

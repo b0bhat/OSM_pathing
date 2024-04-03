@@ -1,7 +1,12 @@
 {
-    "family_mode": false,
-    "max_distance": 0.5,
-    "interestingness": 2.5,
-    "hungriness": 7,
-    "filename": "images/surrey.jpg"
-  }
+    "data": "../artifacts/amenities-vancouver.json.gz",
+    "location": [
+        -122.8432494,
+        49.18020609972222
+    ],
+    "output": "./output/",
+    "max_distance": "0.5",
+    "hungriness": "7",
+    "interestingness": "2.5",
+    "family_mode": "False"
+}
