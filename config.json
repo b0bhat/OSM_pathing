@@ -8,5 +8,8 @@
     "max_distance": 0.5,
     "hungriness": 7.0,
     "interestingness": 2.5,
-    "family_mode": "False"
+    "family_mode": "True",
+    "max_duration": 3.0,
+    "avg_speed": 25,
+    "point_time": 0.5
 }
