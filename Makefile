@@ -14,12 +14,12 @@ export VENV := $(shell which virtualenv)
 endif
 
 $(info Creating Virtual Envrionment...)
-# VENV_NAME := venv
-# CREATE_VENV := $(shell $(VENV) -p python3 ./$(VENV_NAME))
-# VENV_ACTIVATE := ./$(VENV_NAME)/bin/activate
-# PYTHON3 := ./$(VENV_NAME)/bin/python3
-# PIP3 := ./$(VENV_NAME)/bin/pip3
-# REQUIREMENTS := $(shell ${PIP3} install -r ./requirements.txt)
+VENV_NAME := venv
+CREATE_VENV := $(shell $(VENV) -p python3 ./$(VENV_NAME))
+VENV_ACTIVATE := ./$(VENV_NAME)/bin/activate
+PYTHON3 := ./$(VENV_NAME)/bin/python3
+PIP3 := ./$(VENV_NAME)/bin/pip3
+REQUIREMENTS := $(shell ${PIP3} install -r ./requirements.txt)
 $(info Virtual Environment Created!)
 
 
@@ -38,13 +38,6 @@ $(info [WARNING] 'FAMILY_MODE' is not set, default to 'False')
 FAMILY_MODE := False
 else
 $(info [INFO] 'FAMILY_MODE'= $(FAMILY_MODE))
-endif
-
-ifeq ($(origin OUTPUT), undefined)
-$(info [WARNING] 'OUTPUT' is not set, default to 'output')
-OUTPUT := ./output
-else
-$(info [INFO] 'OUTPUT'= $(OUTPUT))
 endif
 
 ifeq ($(origin MAX_DISTANCE), undefined)
@@ -81,6 +74,7 @@ ARTIFACTS_DIRECTORY := ./$(PIPELINE_DIRECTORY)/artifacts
 #      CONFIGURATIONS
 #############################
 DATA := $(PIPELINE_DIRECTORY)/artifacts/amenities-vancouver.json.gz
+OUTPUT := ./output
 INPUT_HANDLER_SCRIPT := $(SCRIPTS_DIRECTORY)/input_handler.py
 DATA_CLEANING_SCRIPT := $(SCRIPTS_DIRECTORY)/data_cleaning.py
 GENERATE_ROUTE_SCRIPT := $(SCRIPTS_DIRECTORY)/generate_route.py
@@ -93,11 +87,11 @@ SCRIPT_ARGS := --data $(DATA) --image $(IMAGE) --family_mode $(FAMILY_MODE) --ou
 #############################
 help:
 	@echo "Please use 'make <target>' where <target> is one of"
-	@echo "  run            to run the whole pipeline"
-	@echo "  input          to handle input data"
-	@echo "  data_cleaning  to handle input data"
-	@echo "  generate_route to generate route"
-	@echo "  output         to output data"
+	@echo "  run             to run the whole pipeline"
+	@echo "  input_handler   to handle input data"
+	@echo "  data_cleaning   to handle input data"
+	@echo "  generate_route  to generate route"
+	@echo "  output_handler  to output data"
 	@echo "with environment variables"
 	@echo "  IMAGE=           path to the image"
 	@echo "  FAMILY_MODE=     family mode"
