@@ -22,10 +22,10 @@ need to implement:
 - `POINT_DURATION`: How long you think you'll spend at each point on average.
 
 ## Run
-1. Install dependencies:
+1. Install `virtualenv`:
 ```
-pip install --user -r ./requirements.txt
-pip3 install --user -r ./requirements.txt # if have python3
+pip install --user virtualenv
+pip3 install --user virtualenv # if have python3
 ```
 2. Run
 ```
