@@ -4,9 +4,6 @@
 Handling input to generate data for the pipeline
 '''
 
-import os, requests
-import numpy as np
-import sys
 from PIL import Image
 from PIL.ExifTags import TAGS, GPSTAGS
 from pillow_heif import register_heif_opener
@@ -24,6 +21,7 @@ interestingness = float(helper.args['interestingness'])
 family_mode = helper.args['family_mode']
 
 # reference: https://www.geeksforgeeks.org/how-to-extract-image-metadata-in-python/
+# extract gps data from image metadata
 def get_metadata(image_file):
   if image_file.endswith(".jpg") or image_file.endswith(".JPG") or image_file.endswith(".jpeg"):
     image = Image.open(image_file)
@@ -51,13 +49,16 @@ def get_metadata(image_file):
 
   return exif_data
 
+
 # reference: https://stackoverflow.com/questions/19804768/interpreting-gps-info-of-exif-data-from-photo-in-python
+# convert gps data to decimal
 def gps_data_to_degree(degrees, minutes, seconds, direction):
   decimal = degrees + minutes / 60 + seconds / 3600
   if direction in ['S', 'W']:
       decimal = -decimal
   return decimal
 
+# main function
 # get location from image metadata
 metadata = get_metadata(imagefile)
 latitude = gps_data_to_degree(*metadata['GPSInfo']['GPSLatitude'], metadata['GPSInfo']['GPSLatitudeRef'])

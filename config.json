@@ -8,5 +8,5 @@
     "max_distance": 0.5,
     "hungriness": 7.0,
     "interestingness": 2.5,
-    "family_mode": "True"
+    "family_mode": "False"
 }

@@ -1,18 +1,14 @@
 #!/usr/bin/env python3
 
 '''
-Handling input to generate data for the pipeline
+Cleaning the amenity data and assigning weights to each amenity
 '''
 
-import os, requests
-import pandas as pd
 import numpy as np
-from PIL import Image
-from PIL.ExifTags import TAGS, GPSTAGS
-from pillow_heif import register_heif_opener
 
 from shared_methods import Helper
 
+# read environment variables
 helper = Helper()
 data_file, family_mode = helper.read_config(["data", "family_mode"])
 data = helper.load_data(data_file)
@@ -75,6 +71,12 @@ base_weights = {
     "shop|clothes": 7
 }
 
+# Function to check if a tags has 'historic' or 'tourism' keys
+def has_tourism(tags):
+    return 'tourism' in tags
+
+
+# main function
 # set to 0 if family friendly is on
 adult_only_amenities = ['bar','pub','nightclub', 'gambling', 'casino']
 if family_mode:
@@ -83,10 +85,6 @@ if family_mode:
             base_weights[place] = 0
         if place in food_weights:
             food_weights[place] = 0
-
-# Function to check if a tags has 'historic' or 'tourism' keys
-def has_tourism(tags):
-    return 'tourism' in tags
 
 # all records that have tourism key in their tag
 tourism_data = data[data['tags'].apply(has_tourism)]

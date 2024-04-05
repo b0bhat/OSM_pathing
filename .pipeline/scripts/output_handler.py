@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 '''
-Output dataframe into a GPX file and display the route on a map
+Output dataframe into a GPX file and output nice message to the terminal
 '''
 
 import numpy as np
@@ -42,5 +42,9 @@ def output_gpx(points, output_file):
         doc.writexml(fh, indent=' ')
 
 # helper.visualize_route(weighted_data, route)
-print("You can check the route on https://www.mygpsfiles.com/app/")
+
+# print to the terminal nicely
 output_gpx(route, output_file)
+print("Route generated successfully! 🗺️")
+print(f"==> {output_file}")
+print("You can check the route on https://www.mygpsfiles.com/app/")

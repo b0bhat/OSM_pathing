@@ -1,7 +1,13 @@
 #!/usr/bin/env python3
 
 '''
-Shared methods for routing
+Shared methods for the pipeline
+    - parse command line arguments
+    - load data from file depends on the file extensions
+    - translate address to latitude and longitude
+    - get route from coordinates using OSRM api
+    - plot the route on the map
+    - read/save config file
 '''
 
 import json
@@ -70,8 +76,9 @@ class Helper:
             "geometries": "geojson",
             "overview": "full"
         }
+        
         response = requests.get(base_url + coordinates_str, params=query_params)
-        if response.status_code != 200:
+        if response.status_code != 200: # unsessful
             print(f"[ERROR]: api call failed with code {response.status_code}")
             return None
         
@@ -89,6 +96,7 @@ class Helper:
         plt.grid(True)
         plt.show()
 
+    # save data into config file
     def save_config(self, data):
         with open('./config.json', 'w') as f:
             json.dump(data, f, indent=4)
@@ -96,7 +104,7 @@ class Helper:
 
     # read config file
     def read_config(self, variables):
-        with open('../../config.json') as f:
+        with open('./config.json') as f:
             config = json.load(f)
 
         return [config.get(var) for var in variables]
