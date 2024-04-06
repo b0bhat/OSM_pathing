@@ -9,13 +9,19 @@ import pandas as pd
 from shared_methods import Helper
 
 helper = Helper()
-_, output_dir = helper.read_config(["data", "output"]) # somehow, if I read the output alone, it will return [./output] instead of ./output, when I read it will some other value it will return the correct value
+output_dir, distance, duration = helper.read_config(["output", "distance", "duration"]) # somehow, if I read the output alone, it will return [./output] instead of ./output, when I read it will some other value it will return the correct value
 output_file = f"{output_dir}/output.gpx"
 weighted_data = helper.load_data('./.pipeline/artifacts/weighted_amenities-vancouver.csv')
 route = helper.load_data("./.pipeline/artifacts/route.csv")
 
 OUTPUT_TEMPLATE = (
-
+    'Route generated successfully! 🗺️\n'
+    '==> {output_file}\n'
+    'You can check the route on https://www.mygpsfiles.com/app/\n'
+    'Route informations:\n'
+    ' - Total distance: {distance} km\n'
+    ' - Total Duration: {duration} hours\n'
+    'Happy exploring! 🚶‍♂️'
 )
 
 # from exercise3 calc_distance_hint.py
@@ -42,9 +48,11 @@ def output_gpx(points, output_file):
         doc.writexml(fh, indent=' ')
 
 # helper.visualize_route(weighted_data, route)
+output_gpx(route, output_file)
 
 # print to the terminal nicely
-output_gpx(route, output_file)
-print("Route generated successfully! 🗺️")
-print(f"==> {output_file}")
-print("You can check the route on https://www.mygpsfiles.com/app/")
+print(OUTPUT_TEMPLATE.format(
+       output_file = output_file,
+       distance = distance,
+       duration = duration
+))

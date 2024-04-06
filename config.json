@@ -4,9 +4,12 @@
         -122.8432494,
         49.18020609972222
     ],
+    "start_time": "15:02",
     "output": "./output",
     "max_distance": 0.5,
     "hungriness": 7.0,
     "interestingness": 2.5,
-    "family_mode": "False"
+    "family_mode": "False",
+    "distance": 414652.8,
+    "duration": 38781.6
 }
