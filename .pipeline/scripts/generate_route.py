@@ -18,7 +18,7 @@ VAN_LON_TO_KM = 111 # One longitude is usually ~111km anywhere
 
 # read environment variables
 helper = Helper()
-location, hungriness, interestingness, max_duration, avg_speed, point_time = helper.read_config(["location", "hungriness", "interestingness", "max_duration", "avg_speed", "point_time"])
+location, hungriness, interestingness, duration, avg_speed, point_time = helper.read_config(["location", "hungriness", "interestingness", "duration", "avg_speed", "point_time"])
 weighted_data = helper.load_data('./.pipeline/artifacts/weighted_amenities-vancouver.csv')
 
 # np.random.seed(42)
@@ -33,7 +33,7 @@ def find_closest_points(tree, p_lat, p_lon, k=10, epsilon=0.001):
 
 
 # calculate route given the start point with Ball Tree
-def calculate_route(weighted_data, start_point, max_points=10, max_duration=3, avg_speed=25):
+def calculate_route(weighted_data, start_point, max_points=10, duration=3, avg_speed=25):
     indices = []
     visited = set([])
     total_distance = 0 # total straight line distance between points
@@ -79,13 +79,13 @@ def calculate_route(weighted_data, start_point, max_points=10, max_duration=3, a
                 indices.append(weighted_data_index)
                 visited.add(neighbor)
                 # Get l1 norm distance for generally more reliable time estimation
-                lat_diff_km = abs(current_point['lat'] - neighbor['lat']) * VAN_LAT_TO_KM
-                lon_diff_km = abs(current_point['lon'] - neighbor['lon']) * VAN_LON_TO_KM
+                lat_diff_km = abs(current_point['lat'] - lat) * VAN_LAT_TO_KM
+                lon_diff_km = abs(current_point['lon'] - lon) * VAN_LON_TO_KM
                 l1_distance = lat_diff_km + lon_diff_km
                 est_total_hours += (l1_distance / avg_speed) + point_time
                 break
 
-        if est_total_hours >= max_duration:
+        if est_total_hours >= duration:
             break
 
     return weighted_data.iloc[indices], total_distance, est_total_hours
@@ -111,7 +111,8 @@ point = pd.Series({'lat': location[1], 'lon': location[0]})
 # weighted_data = weighted_data[weighted_data['food'] == 0].reset_index()
 
 # calculate_route <data> <start point> <max points in route> <max km in route>
-route, total_distance, est_total_hours = calculate_route(weighted_data, point, 100, max_duration, avg_speed)
+route, total_distance, est_total_hours = calculate_route(weighted_data, point, 100, duration, avg_speed)
+print(route)
 print(est_total_hours)
 # print(route[['name', 'weight']])
 # print(route['weight'].mean())

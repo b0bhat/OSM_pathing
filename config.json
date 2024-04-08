@@ -5,11 +5,10 @@
         49.18020609972222
     ],
     "output": "./output",
-    "max_distance": 0.5,
     "hungriness": 7.0,
     "interestingness": 2.5,
-    "family_mode": "True",
-    "max_duration": 3.0,
-    "avg_speed": 25,
-    "point_time": 0.5
+    "family_mode": "False",
+    "duration": 3.0,
+    "avg_speed": 25.0,
+    "point_time": 0.2
 }

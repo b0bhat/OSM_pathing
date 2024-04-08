@@ -15,11 +15,10 @@ helper = Helper()
 data = helper.args['data']
 imagefile = helper.args['image']
 output = helper.args['output']
-max_distance = float(helper.args['distance'])
 hungriness = float(helper.args['hungriness'])
 interestingness = float(helper.args['interestingness'])
 family_mode = helper.args['family_mode']
-max_duration = float(helper.args['duration'])
+duration = float(helper.args['duration'])
 avg_speed = float(helper.args['avg_speed'])
 point_time = float(helper.args['point_time'])
 
@@ -74,11 +73,10 @@ print(f"""Inputs:
 Data                    = {data}
 Location of Input Image = {location}
 Output Path             = {output}
-Max Distance            = {max_distance}
 Hungriness              = {hungriness}
 Interestingness         = {interestingness}
 Family Mode             = {family_mode}
-Duration                = {max_duration}
+Duration                = {duration}
 Average Speed           = {avg_speed}
 Time at Point           = {point_time}
 """)
@@ -87,11 +85,10 @@ helper.save_config({
   "data": data,
   "location": location,
   "output": output,
-  "max_distance": max_distance,
   "hungriness": hungriness,
   "interestingness": interestingness,
   "family_mode": family_mode,
-  "max_duration": max_duration,
+  "duration": duration,
   "avg_speed": avg_speed,
   "point_time": point_time,
 })
