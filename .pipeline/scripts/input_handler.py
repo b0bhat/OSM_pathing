@@ -66,10 +66,7 @@ latitude = gps_data_to_degree(*metadata['GPSInfo']['GPSLatitude'], metadata['GPS
 longitude = gps_data_to_degree(*metadata['GPSInfo']['GPSLongitude'], metadata['GPSInfo']['GPSLongitudeRef'])
 location = (float(longitude), float(latitude))
 
-start_time = datetime.strptime(metadata['DateTime'], '%Y:%m:%d %H:%M:%S')
-format = '%H:%M' # format with just hours and minutes
-# format = '%Y-%m-%d %H:%M' # formate with date, hours and minutes
-start_time = start_time.strftime(format)
+start_time = metadata['DateTime']
 
 # save all input variables to config.json
 print(f"""Inputs:

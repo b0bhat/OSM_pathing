@@ -27,7 +27,7 @@ def find_closest_points(tree, p_lat, p_lon, k=10, epsilon=0.001):
 
 
 # calculate route given the start point with Ball Tree
-def calculate_route(weighted_data, start_point, max_points=10, max_distance=0.5):
+def calculate_route(weighted_data, start_point, max_points=10):
     indices = []
     visited = set([])
     total_distance = 0 # total straight line distance between points
@@ -106,7 +106,7 @@ point = pd.Series({'lat': location[1], 'lon': location[0]})
 # weighted_data = weighted_data[weighted_data['food'] == 0].reset_index()
 
 # calculate_route <data> <start point> <max points in route> <max km in route>
-route, total_distance = calculate_route(weighted_data, point, 100, )
+route, total_distance = calculate_route(weighted_data, point, 100)
 # print(route[['name', 'weight']])
 # print(route['weight'].mean())
 
