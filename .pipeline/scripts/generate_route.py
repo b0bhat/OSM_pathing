@@ -58,21 +58,20 @@ def calculate_route(weighted_data, start_point, max_points=10):
             cur_data = food
 
         # Use balltree to locate next k points
-        neighbors, distances = find_closest_points(cur_balltree, current_point['lat'], current_point['lon'], k=20)
+        neighbors, distances = find_closest_points(cur_balltree, current_point['lat'], current_point['lon'], k=30)
         adjusted_distances = []
 
         # Adjust distances with weights, making more interesting places seem closer for the purpose of sorting
         for neighbor, distance in zip(neighbors, distances):
             weight = cur_data.loc[neighbor]['weight']
-            distance *= 1 - (weight - 1) * pow((interestingness / 3), 2)
-            adjusted_distances.append((neighbor, distance))
+            weighted_distance = distance/(weight ** (0.5*interestingness))
+            adjusted_distances.append((neighbor, weighted_distance))
 
         adjusted_distances.sort(key=lambda x: x[1])
 
         # From sorted list, check neighbours and if not visited, use as next point
-        for neighbor, distance in adjusted_distances:
+        for neighbor, weighted_distance in adjusted_distances:
             if neighbor not in visited:
-                total_distance += distance
                 lat = cur_data.iloc[neighbor]['lat']
                 lon = cur_data.iloc[neighbor]['lon']
                 weighted_data_index = weighted_data.query("lat == @lat & lon == @lon").index[0]
@@ -82,6 +81,7 @@ def calculate_route(weighted_data, start_point, max_points=10):
                 lat_diff_km = abs(current_point['lat'] - lat) * VAN_LAT_TO_KM
                 lon_diff_km = abs(current_point['lon'] - lon) * VAN_LON_TO_KM
                 l1_distance = lat_diff_km + lon_diff_km
+                total_distance += l1_distance
                 est_total_hours += (l1_distance / avg_speed) + point_time
                 break
 
@@ -104,7 +104,10 @@ def stitch_route(route):
         route_raw = helper.osrm_route_query([point1, point2])
         route_coords = route_raw['routes'][0]['geometry']['coordinates']
         route_df = pd.DataFrame(route_coords, columns=['lon', 'lat'])
-        stitched_route = pd.concat([stitched_route, route_df], ignore_index=True)
+        if stitched_route.empty:
+            stitched_route = route_df
+        else:
+            stitched_route = pd.concat([stitched_route, route_df], ignore_index=True)
 
         # calculate distance and duration
         distance += route_raw['routes'][0]['distance']
@@ -121,6 +124,7 @@ point = pd.Series({'lat': location[1], 'lon': location[0]})
 # calculate_route <data> <start point> <max points in route> <max km in route>
 route, total_distance, est_total_hours = calculate_route(weighted_data, point, 100)
 print(route)
+print(total_distance)
 print(est_total_hours)
 # print(route[['name', 'weight']])
 # print(route['weight'].mean())
