@@ -4,6 +4,7 @@
 Handling input to generate data for the pipeline
 '''
 
+from datetime import datetime
 from PIL import Image
 from PIL.ExifTags import TAGS, GPSTAGS
 from pillow_heif import register_heif_opener
@@ -59,17 +60,19 @@ def gps_data_to_degree(degrees, minutes, seconds, direction):
   return decimal
 
 # main function
-# get location from image metadata
+# get location and time from image metadata
 metadata = get_metadata(imagefile)
 latitude = gps_data_to_degree(*metadata['GPSInfo']['GPSLatitude'], metadata['GPSInfo']['GPSLatitudeRef'])
 longitude = gps_data_to_degree(*metadata['GPSInfo']['GPSLongitude'], metadata['GPSInfo']['GPSLongitudeRef'])
-
 location = (float(longitude), float(latitude))
+
+start_time = metadata['DateTime']
 
 # save all input variables to config.json
 print(f"""Inputs:
 Data                    = {data}
 Location of Input Image = {location}
+Start Time              = {start_time}
 Output Path             = {output}
 Max Distance            = {max_distance}
 Hungriness              = {hungriness}
@@ -80,6 +83,7 @@ Family Mode             = {family_mode}
 helper.save_config({
   "data": data,
   "location": location,
+  'start_time': start_time,
   "output": output,
   "max_distance": max_distance,
   "hungriness": hungriness,
