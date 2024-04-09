@@ -106,7 +106,18 @@ class Helper:
     def save_config(self, data):
         with open('./config.json', 'w') as f:
             json.dump(data, f, indent=4)
+
+
+    # https://www.geeksforgeeks.org/append-to-json-file-using-python/
+    # append key: value pair to config file
+    def add_config(self, new_data):
+        with open('./config.json', 'r') as f:
+            file_data = json.load(f)
         
+        file_data.update(new_data)
+
+        with open('./config.json', 'w') as f:
+            json.dump(file_data, f, indent=4)
 
     # read config file
     def read_config(self, variables):
