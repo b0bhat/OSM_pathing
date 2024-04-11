@@ -13,7 +13,11 @@ else
 export VENV := $(shell which virtualenv)
 endif
 
-$(info Creating Virtual Environment...)
+# if venv already exists, skip creating it
+ifneq (, $(wildcard ./venv))
+$(info Virtual Environment Already Exists!)
+else
+$(info Creating Virtual Envrionment...)
 VENV_NAME := venv
 CREATE_VENV := $(shell $(VENV) -p python3 ./$(VENV_NAME))
 VENV_ACTIVATE := ./$(VENV_NAME)/bin/activate
@@ -21,6 +25,7 @@ PYTHON3 := ./$(VENV_NAME)/bin/python3
 PIP3 := ./$(VENV_NAME)/bin/pip3
 REQUIREMENTS := $(shell ${PIP3} install -r ./requirements.txt)
 $(info Virtual Environment Created!)
+endif
 
 
 #############################
