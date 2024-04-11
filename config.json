@@ -9,8 +9,7 @@
     "hungriness": 7.0,
     "interestingness": 2.5,
     "family_mode": "False",
-    "duration": 3281.0,
+    "duration": 3.0,
     "avg_speed": 25.0,
-    "point_time": 0.2,
-    "distance": 40713.3
+    "point_time": 0.2
 }
