@@ -20,7 +20,6 @@ hungriness = float(helper.args['hungriness'])
 interestingness = float(helper.args['interestingness'])
 family_mode = helper.args['family_mode']
 duration = float(helper.args['duration'])
-avg_speed = float(helper.args['avg_speed'])
 point_time = float(helper.args['point_time'])
 
 # reference: https://www.geeksforgeeks.org/how-to-extract-image-metadata-in-python/
@@ -80,7 +79,6 @@ Hungriness              = {hungriness}
 Interestingness         = {interestingness}
 Family Mode             = {family_mode}
 Duration                = {duration}
-Average Speed           = {avg_speed}
 Time at Point           = {point_time}
 """)
 
@@ -93,6 +91,5 @@ helper.save_config({
   "interestingness": interestingness,
   "family_mode": family_mode,
   "duration": duration,
-  "avg_speed": avg_speed,
   "point_time": point_time,
 })

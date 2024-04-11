@@ -30,7 +30,6 @@ class Helper:
             parser.add_argument('-in', '--interestingness', metavar='', help='Interestingness')
             parser.add_argument('-f', '--family_mode', metavar='', help='Family mode')
             parser.add_argument('-d', '--duration', metavar='', help='Duration')
-            parser.add_argument('-s', '--avg_speed', metavar='', help='Average driving speed')
             parser.add_argument('-t', '--point_time', metavar='', help='Time at point')
             self.args = vars(parser.parse_args())
         else:

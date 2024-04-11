@@ -66,13 +66,6 @@ else
 $(info [INFO] 'HUNGRINESS'= $(HUNGRINESS))
 endif
 
-ifeq ($(origin AVG_SPEED), undefined)
-$(info [WARNING] 'AVG_SPEED' is not set, default to '25')
-AVG_SPEED := 25
-else
-$(info [INFO] 'AVG_SPEED'= $(AVG_SPEED))
-endif
-
 ifeq ($(origin POINT_TIME), undefined)
 $(info [WARNING] 'POINT_TIME' is not set, default to '0.2')
 POINT_TIME := 0.2
@@ -98,7 +91,7 @@ INPUT_HANDLER_SCRIPT := $(SCRIPTS_DIRECTORY)/input_handler.py
 DATA_CLEANING_SCRIPT := $(SCRIPTS_DIRECTORY)/data_cleaning.py
 GENERATE_ROUTE_SCRIPT := $(SCRIPTS_DIRECTORY)/generate_route.py
 OUTPUT_HANDLER_SCRIPT := $(SCRIPTS_DIRECTORY)/output_handler.py
-SCRIPT_ARGS := --data $(DATA) --image $(IMAGE) --family_mode $(FAMILY_MODE) --output $(OUTPUT) --duration $(DURATION) --interestingness $(INTERESTINGNESS) --hungriness $(HUNGRINESS) --avg_speed $(AVG_SPEED) --point_time $(POINT_TIME)
+SCRIPT_ARGS := --data $(DATA) --image $(IMAGE) --family_mode $(FAMILY_MODE) --output $(OUTPUT) --duration $(DURATION) --interestingness $(INTERESTINGNESS) --hungriness $(HUNGRINESS) --point_time $(POINT_TIME)
 
 
 #############################
@@ -118,7 +111,6 @@ help:
 	@echo "  DURATION=    	  duration"
 	@echo "  INTERESTINGNESS= interestingness"
 	@echo "  HUNGRINESS=      hungriness"
-	@echo "  AVG_SPEED=    	  average driving speed"
 	@echo "  POINT_TIME=      average hours spent at each point"
 
 # example run

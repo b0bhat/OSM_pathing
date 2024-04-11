@@ -15,7 +15,7 @@ VAN_LON_TO_KM = 111 # One longitude is usually ~111km anywhere
 
 # read environment variables
 helper = Helper()
-location, hungriness, interestingness, duration, avg_speed, point_time = helper.read_config(["location", "hungriness", "interestingness", "duration", "avg_speed", "point_time"])
+location, hungriness, interestingness, duration, point_time = helper.read_config(["location", "hungriness", "interestingness", "duration", "point_time"])
 weighted_data = helper.load_data('./.pipeline/artifacts/weighted_amenities-vancouver.csv')
 
 # np.random.seed(42)
@@ -82,7 +82,8 @@ def calculate_route(weighted_data, start_point, max_points=10):
                 lon_diff_km = abs(current_point['lon'] - lon) * VAN_LON_TO_KM
                 l1_distance = lat_diff_km + lon_diff_km
                 total_distance += l1_distance
-                est_total_hours += (l1_distance / avg_speed) + point_time
+                # 30km/h is good estimation average driving speed
+                est_total_hours += (l1_distance / 30) + point_time 
                 break
 
         if est_total_hours >= duration:
