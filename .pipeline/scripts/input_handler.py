@@ -14,7 +14,7 @@ from shared_methods import Helper
 # get input variables
 helper = Helper()
 data = helper.args['data']
-imagefile = helper.args['image']
+input_address = helper.args['input_address']
 output = helper.args['output']
 max_distance = float(helper.args['distance'])
 hungriness = float(helper.args['hungriness'])
@@ -61,23 +61,31 @@ def gps_data_to_degree(degrees, minutes, seconds, direction):
 
 # main function
 # get location and time from image metadata
-metadata = get_metadata(imagefile)
-latitude = gps_data_to_degree(*metadata['GPSInfo']['GPSLatitude'], metadata['GPSInfo']['GPSLatitudeRef'])
-longitude = gps_data_to_degree(*metadata['GPSInfo']['GPSLongitude'], metadata['GPSInfo']['GPSLongitudeRef'])
-location = (float(longitude), float(latitude))
+if (input_address.endswith(".jpg") or input_address.endswith(".JPG") or input_address.endswith(".jpeg") or input_address.endswith(".HEIC")):
+  metadata = get_metadata(input_address)
+  latitude = gps_data_to_degree(*metadata['GPSInfo']['GPSLatitude'], metadata['GPSInfo']['GPSLatitudeRef'])
+  longitude = gps_data_to_degree(*metadata['GPSInfo']['GPSLongitude'], metadata['GPSInfo']['GPSLongitudeRef'])
+  location = (float(longitude), float(latitude))
 
-start_time = metadata['DateTime']
+  start_time = metadata['DateTime']
+else:
+  location = helper.geo_coding(input_address)
+  start_time = datetime.now().isoformat() # getting the current time
+
+  # converting the time to datetime object with format 'YYYY:MM:DD HH:MM:SS'
+  dt_obj = datetime.strptime(start_time, "%Y-%m-%dT%H:%M:%S.%f")
+  start_time = dt_obj.strftime("%Y:%m:%d %H:%M:%S")
 
 # save all input variables to config.json
 print(f"""Inputs:
-Data                    = {data}
-Location of Input Image = {location}
-Start Time              = {start_time}
-Output Path             = {output}
-Max Distance            = {max_distance}
-Hungriness              = {hungriness}
-Interestingness         = {interestingness}
-Family Mode             = {family_mode}
+Data              = {data}
+Location of Input = {location}
+Start Time        = {start_time}
+Output Path       = {output}
+Max Distance      = {max_distance}
+Hungriness        = {hungriness}
+Interestingness   = {interestingness}
+Family Mode       = {family_mode}
 """)
 
 helper.save_config({

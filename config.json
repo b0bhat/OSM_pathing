@@ -1,13 +1,15 @@
 {
     "data": "./.pipeline/artifacts/amenities-vancouver.json.gz",
     "location": [
-        -122.8432494,
-        49.18020609972222
+        -123.179234,
+        49.1925124
     ],
-    "start_time": "2024:03:31 15:02:44",
+    "start_time": "2024:04:10 19:32:54",
     "output": "./output",
     "max_distance": 0.5,
     "hungriness": 7.0,
     "interestingness": 2.5,
-    "family_mode": "False"
+    "family_mode": "False",
+    "distance": 380459.4,
+    "duration": 37077.4
 }

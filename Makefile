@@ -13,6 +13,10 @@ else
 export VENV := $(shell which virtualenv)
 endif
 
+# if venv already exists, skip creating it
+ifneq (, $(wildcard ./venv))
+$(info Virtual Environment Already Exists!)
+else
 $(info Creating Virtual Envrionment...)
 VENV_NAME := venv
 CREATE_VENV := $(shell $(VENV) -p python3 ./$(VENV_NAME))
@@ -21,16 +25,17 @@ PYTHON3 := ./$(VENV_NAME)/bin/python3
 PIP3 := ./$(VENV_NAME)/bin/pip3
 REQUIREMENTS := $(shell ${PIP3} install -r ./requirements.txt)
 $(info Virtual Environment Created!)
+endif
 
 
 #############################
 #   ENVIRONMENT VARIABLES
 #############################
-ifeq ($(origin IMAGE), undefined)
-$(info [WARNING] 'IMAGE' is not set, default to 'dafualt_image')
-IMAGE := ./images/default_image.jpg
+ifeq ($(origin INPUT_LOCATION), undefined)
+$(error [WARNING] 'INPUT_LOCATION' is not set, please input a image path or an address')
+exit(1)
 else
-$(info [INFO] 'IMAGE'= $(IMAGE))
+$(info [INFO] 'INPUT_LOCATION'= $(INPUT_LOCATION))
 endif
 
 ifeq ($(origin FAMILY_MODE), undefined)
@@ -79,7 +84,7 @@ INPUT_HANDLER_SCRIPT := $(SCRIPTS_DIRECTORY)/input_handler.py
 DATA_CLEANING_SCRIPT := $(SCRIPTS_DIRECTORY)/data_cleaning.py
 GENERATE_ROUTE_SCRIPT := $(SCRIPTS_DIRECTORY)/generate_route.py
 OUTPUT_HANDLER_SCRIPT := $(SCRIPTS_DIRECTORY)/output_handler.py
-SCRIPT_ARGS := --data $(DATA) --image $(IMAGE) --family_mode $(FAMILY_MODE) --output $(OUTPUT) --distance $(MAX_DISTANCE) --interestingness $(INTERESTINGNESS) --hungriness $(HUNGRINESS)
+SCRIPT_ARGS := --data $(DATA) --input_address "$(INPUT_LOCATION)" --family_mode $(FAMILY_MODE) --output $(OUTPUT) --distance $(MAX_DISTANCE) --interestingness $(INTERESTINGNESS) --hungriness $(HUNGRINESS)
 
 
 #############################
@@ -93,12 +98,12 @@ help:
 	@echo "  generate_route  to generate route"
 	@echo "  output_handler  to output data"
 	@echo "with environment variables"
-	@echo "  IMAGE=           path to the image"
-	@echo "  FAMILY_MODE=     family mode"
-	@echo "  OUTPUT=          path to the output"
-	@echo "  MAX_DISTANCE=    max distance"
-	@echo "  INTERESTINGNESS= interestingness"
-	@echo "  HUNGRINESS=      hungriness"
+	@echo "  INPUT_LOCATION  = image path or address"
+	@echo "  FAMILY_MODE     = family mode"
+	@echo "  OUTPUT          = path to the output"
+	@echo "  MAX_DISTANCE    = max distance"
+	@echo "  INTERESTINGNESS = interestingness"
+	@echo "  HUNGRINESS      = hungriness"
 
 # example run
 # make run IMAGE=./images/default_image.jpg FAMILY_MODE=False OUTPUT=./output MAX_DISTANCE=0.5 INTERESTINGNESS=2.5 HUNGRINESS=7

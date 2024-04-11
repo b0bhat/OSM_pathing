@@ -22,7 +22,7 @@ class Helper:
         # parse command line arguments
         parser = argparse.ArgumentParser(description='Route generation')
         parser.add_argument('-data', '--data', metavar='', required=True, help='Amenities data file path')
-        parser.add_argument('-i', '--image', metavar='', required=True, help='Image file path')
+        parser.add_argument('-i', '--input_address', metavar='', required=True, help='Image file path or address')
         parser.add_argument('-o', '--output', metavar='', required=True, help='Output file path')
         parser.add_argument('-d', '--distance', metavar='', help='Max distance')
         parser.add_argument('-hu', '--hungriness', metavar='', help='Hungriness')
