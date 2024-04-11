@@ -114,11 +114,13 @@ point = pd.Series({'lat': location[1], 'lon': location[0]})
 
 # calculate_route <data> <start point> <max points in route> <max km in route>
 all_routes = pd.DataFrame(columns=['route', 'distance', 'duration'])
-routes = []
-for i in range(5):
+# routes = []
+for i in range(3):
     route, est_distance, est_total_hours = calculate_route(weighted_data, point, 100)
-    routes.append([route, est_distance, est_total_hours])
+    # routes.append([route, est_distance, est_total_hours])
     route_df = pd.DataFrame([stitch_route(route)], columns=['route', 'distance', 'duration'])
+    if all_routes.empty:
+        all_routes = route_df
     all_routes = pd.concat([all_routes, route_df], ignore_index=True)
 
 closest_route = all_routes.iloc[(all_routes['duration'] - duration).abs().idxmin()]

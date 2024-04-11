@@ -64,8 +64,8 @@ print(type(start_time))
 # print to the terminal nicely
 print(OUTPUT_TEMPLATE.format(
        output_file = output_file,
-       distance = distance/1000,
-       duration = duration/3600,
+       distance = distance,
+       duration = duration,
        start_time = start_time,
-       end_time = start_time + timedelta(seconds=duration)
+       end_time = start_time + timedelta(hours=duration)
 ))
