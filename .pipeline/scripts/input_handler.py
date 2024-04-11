@@ -4,6 +4,7 @@
 Handling input to generate data for the pipeline
 '''
 
+from datetime import datetime
 from PIL import Image
 from PIL.ExifTags import TAGS, GPSTAGS
 from pillow_heif import register_heif_opener
@@ -15,11 +16,10 @@ helper = Helper()
 data = helper.args['data']
 imagefile = helper.args['image']
 output = helper.args['output']
-max_distance = float(helper.args['distance'])
 hungriness = float(helper.args['hungriness'])
 interestingness = float(helper.args['interestingness'])
 family_mode = helper.args['family_mode']
-max_duration = float(helper.args['duration'])
+duration = float(helper.args['duration'])
 avg_speed = float(helper.args['avg_speed'])
 point_time = float(helper.args['point_time'])
 
@@ -62,23 +62,24 @@ def gps_data_to_degree(degrees, minutes, seconds, direction):
   return decimal
 
 # main function
-# get location from image metadata
+# get location and time from image metadata
 metadata = get_metadata(imagefile)
 latitude = gps_data_to_degree(*metadata['GPSInfo']['GPSLatitude'], metadata['GPSInfo']['GPSLatitudeRef'])
 longitude = gps_data_to_degree(*metadata['GPSInfo']['GPSLongitude'], metadata['GPSInfo']['GPSLongitudeRef'])
-
 location = (float(longitude), float(latitude))
+
+start_time = metadata['DateTime']
 
 # save all input variables to config.json
 print(f"""Inputs:
 Data                    = {data}
 Location of Input Image = {location}
+Start Time              = {start_time}
 Output Path             = {output}
-Max Distance            = {max_distance}
 Hungriness              = {hungriness}
 Interestingness         = {interestingness}
 Family Mode             = {family_mode}
-Duration                = {max_duration}
+Duration                = {duration}
 Average Speed           = {avg_speed}
 Time at Point           = {point_time}
 """)
@@ -86,12 +87,12 @@ Time at Point           = {point_time}
 helper.save_config({
   "data": data,
   "location": location,
+  'start_time': start_time,
   "output": output,
-  "max_distance": max_distance,
   "hungriness": hungriness,
   "interestingness": interestingness,
   "family_mode": family_mode,
-  "max_duration": max_duration,
+  "duration": duration,
   "avg_speed": avg_speed,
   "point_time": point_time,
 })

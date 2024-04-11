@@ -32,7 +32,7 @@ endif
 #   ENVIRONMENT VARIABLES
 #############################
 ifeq ($(origin IMAGE), undefined)
-$(info [WARNING] 'IMAGE' is not set, default to 'dafualt_image')
+$(info [WARNING] 'IMAGE' is not set, default to 'default_image')
 IMAGE := ./images/default_image.jpg
 else
 $(info [INFO] 'IMAGE'= $(IMAGE))
@@ -45,11 +45,11 @@ else
 $(info [INFO] 'FAMILY_MODE'= $(FAMILY_MODE))
 endif
 
-ifeq ($(origin MAX_DISTANCE), undefined)
-$(info [WARNING] 'MAX_DISTANCE' is not set, default to '0.5')
-MAX_DISTANCE := 0.5
+ifeq ($(origin DURATION), undefined)
+$(info [WARNING] 'DURATION' is not set, default to '3')
+DURATION := 3
 else
-$(info [INFO] 'MAX_DISTANCE'= $(MAX_DISTANCE))
+$(info [INFO] 'DURATION'= $(DURATION))
 endif
 
 ifeq ($(origin INTERESTINGNESS), undefined)
@@ -64,6 +64,20 @@ $(info [WARNING] 'HUNGRINESS' is not set, default to '7')
 HUNGRINESS := 7
 else
 $(info [INFO] 'HUNGRINESS'= $(HUNGRINESS))
+endif
+
+ifeq ($(origin AVG_SPEED), undefined)
+$(info [WARNING] 'AVG_SPEED' is not set, default to '25')
+AVG_SPEED := 25
+else
+$(info [INFO] 'AVG_SPEED'= $(AVG_SPEED))
+endif
+
+ifeq ($(origin POINT_TIME), undefined)
+$(info [WARNING] 'POINT_TIME' is not set, default to '0.2')
+POINT_TIME := 0.2
+else
+$(info [INFO] 'POINT_TIME'= $(POINT_TIME))
 endif
 
 
@@ -84,7 +98,7 @@ INPUT_HANDLER_SCRIPT := $(SCRIPTS_DIRECTORY)/input_handler.py
 DATA_CLEANING_SCRIPT := $(SCRIPTS_DIRECTORY)/data_cleaning.py
 GENERATE_ROUTE_SCRIPT := $(SCRIPTS_DIRECTORY)/generate_route.py
 OUTPUT_HANDLER_SCRIPT := $(SCRIPTS_DIRECTORY)/output_handler.py
-SCRIPT_ARGS := --data $(DATA) --image $(IMAGE) --family_mode $(FAMILY_MODE) --output $(OUTPUT) --distance $(MAX_DISTANCE) --interestingness $(INTERESTINGNESS) --hungriness $(HUNGRINESS)
+SCRIPT_ARGS := --data $(DATA) --image $(IMAGE) --family_mode $(FAMILY_MODE) --output $(OUTPUT) --duration $(DURATION) --interestingness $(INTERESTINGNESS) --hungriness $(HUNGRINESS) --avg_speed $(AVG_SPEED) --point_time $(POINT_TIME)
 
 
 #############################
@@ -101,9 +115,11 @@ help:
 	@echo "  IMAGE=           path to the image"
 	@echo "  FAMILY_MODE=     family mode"
 	@echo "  OUTPUT=          path to the output"
-	@echo "  MAX_DISTANCE=    max distance"
+	@echo "  DURATION=    	  duration"
 	@echo "  INTERESTINGNESS= interestingness"
 	@echo "  HUNGRINESS=      hungriness"
+	@echo "  AVG_SPEED=    	  average driving speed"
+	@echo "  POINT_TIME=      average hours spent at each point"
 
 # example run
 # make run IMAGE=./images/default_image.jpg FAMILY_MODE=False OUTPUT=./output MAX_DISTANCE=0.5 INTERESTINGNESS=2.5 HUNGRINESS=7
