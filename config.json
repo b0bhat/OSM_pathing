@@ -6,10 +6,10 @@
     ],
     "start_time": "2024:04:10 19:32:54",
     "output": "./output",
-    "max_distance": 0.5,
     "hungriness": 7.0,
     "interestingness": 2.5,
     "family_mode": "False",
-    "distance": 380459.4,
-    "duration": 37077.4
+    "duration": 2.74,
+    "point_time": 0.2,
+    "distance": 36.31
 }

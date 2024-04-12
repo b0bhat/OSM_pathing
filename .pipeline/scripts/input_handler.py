@@ -16,10 +16,11 @@ helper = Helper()
 data = helper.args['data']
 input_address = helper.args['input_address']
 output = helper.args['output']
-max_distance = float(helper.args['distance'])
 hungriness = float(helper.args['hungriness'])
 interestingness = float(helper.args['interestingness'])
 family_mode = helper.args['family_mode']
+duration = float(helper.args['duration'])
+point_time = float(helper.args['point_time'])
 
 # reference: https://www.geeksforgeeks.org/how-to-extract-image-metadata-in-python/
 # extract gps data from image metadata
@@ -78,6 +79,7 @@ else:
 
 # save all input variables to config.json
 print(f"""Inputs:
+<<<<<<< HEAD
 Data              = {data}
 Location of Input = {location}
 Start Time        = {start_time}
@@ -86,6 +88,17 @@ Max Distance      = {max_distance}
 Hungriness        = {hungriness}
 Interestingness   = {interestingness}
 Family Mode       = {family_mode}
+=======
+Data                    = {data}
+Location of Input Image = {location}
+Start Time              = {start_time}
+Output Path             = {output}
+Hungriness              = {hungriness}
+Interestingness         = {interestingness}
+Family Mode             = {family_mode}
+Duration in hour        = {duration}
+Average hours at point  = {point_time}
+>>>>>>> baaba0f990122800973420deaed284ba29cd5387
 """)
 
 helper.save_config({
@@ -93,8 +106,9 @@ helper.save_config({
   "location": location,
   'start_time': start_time,
   "output": output,
-  "max_distance": max_distance,
   "hungriness": hungriness,
   "interestingness": interestingness,
-  "family_mode": family_mode
+  "family_mode": family_mode,
+  "duration": duration,
+  "point_time": point_time,
 })

@@ -19,7 +19,7 @@ OUTPUT_TEMPLATE = (
     'You can check the route on https://www.mygpsfiles.com/app/\n'
     'Route informations:\n'
     ' - Total distance: {distance} km\n'
-    ' - Total Duration: {duration} hours\n'
+    ' - Total duration: {duration} hours\n'
     ' - Start time: {start_time}\n'
     ' - End time: {end_time}\n'
     'Happy exploring! 🚶'
@@ -58,8 +58,8 @@ start_time = datetime.strptime(start_time, '%Y:%m:%d %H:%M:%S')
 format = '%Y-%m-%d %H:%M' # formate with date, hours and minutes
 start_time = start_time.strftime(format)
 start_time = datetime.strptime(start_time, format)
-print(start_time)
-print(type(start_time))
+# print(start_time)
+# print(type(start_time))
 
 # print to the terminal nicely
 print(OUTPUT_TEMPLATE.format(
@@ -67,5 +67,5 @@ print(OUTPUT_TEMPLATE.format(
        distance = round(distance/1000, 2),
        duration = round(duration/3600, 2),
        start_time = start_time,
-       end_time = start_time + timedelta(seconds=duration)
+       end_time = start_time + timedelta(hours=duration)
 ))
