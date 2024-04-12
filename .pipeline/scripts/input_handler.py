@@ -79,16 +79,6 @@ else:
 
 # save all input variables to config.json
 print(f"""Inputs:
-<<<<<<< HEAD
-Data              = {data}
-Location of Input = {location}
-Start Time        = {start_time}
-Output Path       = {output}
-Max Distance      = {max_distance}
-Hungriness        = {hungriness}
-Interestingness   = {interestingness}
-Family Mode       = {family_mode}
-=======
 Data                    = {data}
 Location of Input Image = {location}
 Start Time              = {start_time}
@@ -98,7 +88,6 @@ Interestingness         = {interestingness}
 Family Mode             = {family_mode}
 Duration in hour        = {duration}
 Average hours at point  = {point_time}
->>>>>>> baaba0f990122800973420deaed284ba29cd5387
 """)
 
 helper.save_config({
