@@ -11,8 +11,8 @@ in `.pipeline/scripts` folder
 - `input_handler.py` -> `data_cleaning.py` -> `generate_route` -> `output_handler.py`
 
 ## Input Variables
-Adjust the values to your preference:
-- `IMAGE`: the path to your image
+Adjust the values to your preference, or leave them as-is:
+- `IMAGE`: the path to your image (default is somewhere in Surrey)
 - `FAMILY_MODE`: bool, True if less family-friendly places like bars and clubs should be removed.
 - `INTERESTINGNESS`: float from 1-3, how much you value interesting points: 1: I dont care, 3: Give me more interesting points
 - `HUNGRINESS`: int from 0 to 10, the number of interest points before you get hungry, 6 -> foodplace every 6 points

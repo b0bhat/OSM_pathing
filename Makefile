@@ -46,14 +46,14 @@ $(info [INFO] 'FAMILY_MODE'= $(FAMILY_MODE))
 endif
 
 ifeq ($(origin DURATION), undefined)
-$(info [WARNING] 'DURATION' is not set, default to '3')
+$(info [WARNING] 'DURATION' is not set, default to '5')
 DURATION := 5
 else
 $(info [INFO] 'DURATION'= $(DURATION))
 endif
 
 ifeq ($(origin INTERESTINGNESS), undefined)
-$(info [WARNING] 'INTERESTINGNESS' is not set, default to '2.5')
+$(info [WARNING] 'INTERESTINGNESS' is not set, default to '2')
 INTERESTINGNESS := 2
 else
 $(info [INFO] 'INTERESTINGNESS'= $(INTERESTINGNESS))
@@ -67,8 +67,8 @@ $(info [INFO] 'HUNGRINESS'= $(HUNGRINESS))
 endif
 
 ifeq ($(origin POINT_TIME), undefined)
-$(info [WARNING] 'POINT_TIME' is not set, default to '0.2')
-POINT_TIME := 0.3
+$(info [WARNING] 'POINT_TIME' is not set, default to '0.5')
+POINT_TIME := 0.5
 else
 $(info [INFO] 'POINT_TIME'= $(POINT_TIME))
 endif
