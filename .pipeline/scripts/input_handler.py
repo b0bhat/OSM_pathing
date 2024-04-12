@@ -78,8 +78,8 @@ Output Path             = {output}
 Hungriness              = {hungriness}
 Interestingness         = {interestingness}
 Family Mode             = {family_mode}
-Duration                = {duration}
-Time at Point           = {point_time}
+Duration in hour        = {duration}
+Average hours at point  = {point_time}
 """)
 
 helper.save_config({

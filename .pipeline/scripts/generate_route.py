@@ -110,26 +110,18 @@ def stitch_route(route):
 # main function
 point = pd.Series({'lat': location[1], 'lon': location[0]})
 
-# weighted_data = weighted_data[weighted_data['food'] == 0].reset_index()
-
-# calculate_route <data> <start point> <max points in route> <max km in route>
 all_routes = pd.DataFrame(columns=['route', 'distance', 'duration'])
-# routes = []
+
+# test three routes
 for i in range(3):
     route, est_distance, est_total_hours = calculate_route(weighted_data, point, 100)
-    # routes.append([route, est_distance, est_total_hours])
     route_df = pd.DataFrame([stitch_route(route)], columns=['route', 'distance', 'duration'])
     if all_routes.empty:
         all_routes = route_df
     all_routes = pd.concat([all_routes, route_df], ignore_index=True)
-
+# pick route with duration closest to requested duration
 closest_route = all_routes.iloc[(all_routes['duration'] - duration).abs().idxmin()]
 
-# print(route)
-# print(total_distance)
-# print(est_total_hours)
-# print(route[['name', 'weight']])
-# print(route['weight'].mean())
 
 # save route to csv and distance and duration to json
 distance_duration = {
