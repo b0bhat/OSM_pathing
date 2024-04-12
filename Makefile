@@ -47,14 +47,14 @@ endif
 
 ifeq ($(origin DURATION), undefined)
 $(info [WARNING] 'DURATION' is not set, default to '3')
-DURATION := 3
+DURATION := 5
 else
 $(info [INFO] 'DURATION'= $(DURATION))
 endif
 
 ifeq ($(origin INTERESTINGNESS), undefined)
 $(info [WARNING] 'INTERESTINGNESS' is not set, default to '2.5')
-INTERESTINGNESS := 2.5
+INTERESTINGNESS := 2
 else
 $(info [INFO] 'INTERESTINGNESS'= $(INTERESTINGNESS))
 endif
@@ -68,7 +68,7 @@ endif
 
 ifeq ($(origin POINT_TIME), undefined)
 $(info [WARNING] 'POINT_TIME' is not set, default to '0.2')
-POINT_TIME := 0.2
+POINT_TIME := 0.3
 else
 $(info [INFO] 'POINT_TIME'= $(POINT_TIME))
 endif
