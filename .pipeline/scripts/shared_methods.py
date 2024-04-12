@@ -17,23 +17,19 @@ import matplotlib.pyplot as plt
 import argparse
 
 class Helper:
-    def __init__(self, arg=True):
-        if arg:
-            # https://stackoverflow.com/questions/7427101/simple-argparse-example-wanted-1-argument-3-results
-            # parse command line arguments
-            parser = argparse.ArgumentParser(description='Route generation')
-            parser.add_argument('-data', '--data', metavar='', required=True, help='Amenities data file path')
-            parser.add_argument('-i', '--image', metavar='', required=True, help='Image file path')
-            parser.add_argument('-o', '--output', metavar='', required=True, help='Output file path')
-            # parser.add_argument('-d', '--distance', metavar='', help='Max distance')
-            parser.add_argument('-hu', '--hungriness', metavar='', help='Hungriness')
-            parser.add_argument('-in', '--interestingness', metavar='', help='Interestingness')
-            parser.add_argument('-f', '--family_mode', metavar='', help='Family mode')
-            parser.add_argument('-d', '--duration', metavar='', help='Duration')
-            parser.add_argument('-t', '--point_time', metavar='', help='Time at point')
-            self.args = vars(parser.parse_args())
-        else:
-            self.args = {}
+    def __init__(self):
+        # https://stackoverflow.com/questions/7427101/simple-argparse-example-wanted-1-argument-3-results
+        # parse command line arguments
+        parser = argparse.ArgumentParser(description='Route generation')
+        parser.add_argument('-data', '--data', metavar='', required=True, help='Amenities data file path')
+        parser.add_argument('-i', '--input_address', metavar='', required=True, help='Image file path or address')
+        parser.add_argument('-o', '--output', metavar='', required=True, help='Output file path')
+        parser.add_argument('-d', '--duration', metavar='', help='Duration')
+        parser.add_argument('-t', '--point_time', metavar='', help='Time at point')
+        parser.add_argument('-hu', '--hungriness', metavar='', help='Hungriness')
+        parser.add_argument('-in', '--interestingness', metavar='', help='Interestingness')
+        parser.add_argument('-f', '--family_mode', metavar='', help='Family mode')
+        self.args = vars(parser.parse_args())
 
 
     # Load data from file depends on the file extensions

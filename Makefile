@@ -31,11 +31,11 @@ endif
 #############################
 #   ENVIRONMENT VARIABLES
 #############################
-ifeq ($(origin IMAGE), undefined)
-$(info [WARNING] 'IMAGE' is not set, default to 'default_image')
-IMAGE := ./images/default_image.jpg
+ifeq ($(origin INPUT_LOCATION), undefined)
+$(error [WARNING] 'INPUT_LOCATION' is not set, please input a image path or an address')
+exit(1)
 else
-$(info [INFO] 'IMAGE'= $(IMAGE))
+$(info [INFO] 'INPUT_LOCATION'= $(INPUT_LOCATION))
 endif
 
 ifeq ($(origin FAMILY_MODE), undefined)
@@ -91,7 +91,7 @@ INPUT_HANDLER_SCRIPT := $(SCRIPTS_DIRECTORY)/input_handler.py
 DATA_CLEANING_SCRIPT := $(SCRIPTS_DIRECTORY)/data_cleaning.py
 GENERATE_ROUTE_SCRIPT := $(SCRIPTS_DIRECTORY)/generate_route.py
 OUTPUT_HANDLER_SCRIPT := $(SCRIPTS_DIRECTORY)/output_handler.py
-SCRIPT_ARGS := --data $(DATA) --image $(IMAGE) --family_mode $(FAMILY_MODE) --output $(OUTPUT) --duration $(DURATION) --interestingness $(INTERESTINGNESS) --hungriness $(HUNGRINESS) --point_time $(POINT_TIME)
+SCRIPT_ARGS := --data $(DATA) --input_address "$(INPUT_LOCATION)" --family_mode $(FAMILY_MODE) --output $(OUTPUT) --duration $(DURATION) --interestingness $(INTERESTINGNESS) --hungriness $(HUNGRINESS) --point_time $(POINT_TIME)
 
 
 #############################
@@ -105,13 +105,13 @@ help:
 	@echo "  generate_route  to generate route"
 	@echo "  output_handler  to output data"
 	@echo "with environment variables"
-	@echo "  IMAGE=           path to the image"
-	@echo "  FAMILY_MODE=     family mode"
-	@echo "  OUTPUT=          path to the output"
-	@echo "  DURATION=    	  duration"
-	@echo "  INTERESTINGNESS= interestingness"
-	@echo "  HUNGRINESS=      hungriness"
-	@echo "  POINT_TIME=      average hours spent at each point"
+	@echo "  INPUT_LOCATION  = image path or address"
+	@echo "  FAMILY_MODE     = family mode"
+	@echo "  OUTPUT          = path to the output"
+	@echo "  DURATION        = duration"
+	@echo "  INTERESTINGNESS = interestingness"
+	@echo "  HUNGRINESS      = hungriness"
+	@echo "  POINT_TIME      = average hours spent at each point"
 
 # example run
 # make run IMAGE=./images/default_image.jpg FAMILY_MODE=False OUTPUT=./output MAX_DISTANCE=0.5 INTERESTINGNESS=2.5 HUNGRINESS=7

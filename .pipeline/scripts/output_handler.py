@@ -22,7 +22,7 @@ OUTPUT_TEMPLATE = (
     ' - Total duration: {duration} hours\n'
     ' - Start time: {start_time}\n'
     ' - End time: {end_time}\n'
-    'Happy exploring! 🚶‍♂️'
+    'Happy exploring! 🚶'
 )
 
 # from exercise3 calc_distance_hint.py
@@ -64,8 +64,8 @@ start_time = datetime.strptime(start_time, format)
 # print to the terminal nicely
 print(OUTPUT_TEMPLATE.format(
        output_file = output_file,
-       distance = distance,
-       duration = duration,
+       distance = round(distance/1000, 2),
+       duration = round(duration/3600, 2),
        start_time = start_time,
        end_time = start_time + timedelta(hours=duration)
 ))

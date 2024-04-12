@@ -1,10 +1,10 @@
 {
     "data": "./.pipeline/artifacts/amenities-vancouver.json.gz",
     "location": [
-        -122.8432494,
-        49.18020609972222
+        -123.179234,
+        49.1925124
     ],
-    "start_time": "2024:03:31 15:02:44",
+    "start_time": "2024:04:10 19:32:54",
     "output": "./output",
     "hungriness": 7.0,
     "interestingness": 2.5,
